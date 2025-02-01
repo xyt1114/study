@@ -1,0 +1,252 @@
+/* 设置整个页面的背景颜色 */
+body {
+    margin: 0; /* 去除默认的边距 */
+    font-family: 'Segoe UI', system-ui, sans-serif; /* 设置字体 */
+    background-color: #f0f0f0; /* 为整个页面设置柔和的浅灰色背景 */
+}
+
+/* 内容容器，居中对齐 */
+.container {
+    margin: 0 auto; /* 居中对齐 */
+    width: 1226px; /* 固定宽度 */
+    padding: 20px; /* 内边距 */
+    background-color: #ffffff; /* 主内容区域的白色背景 */
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 添加柔和的阴影效果 */
+}
+
+/* 头部背景，采用渐变色 */
+.header {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* 渐变背景，从橙色到黄色 */
+    padding: 20px 0; /* 上下内边距 */
+    text-align: center; /* 文本居中 */
+    border-radius: 8px 8px 0 0; /* 圆角，顶部圆角 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    width: 1660px;
+}
+
+.header .title1 {
+    font-size: 35px; /* 字体大小 */
+    font-family: '华文琥珀', serif; /* 设置中文字体 */
+    color: #ff7e5f;
+    margin: 0; /* 去除默认外边距 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 为文字添加细微的阴影 */
+}
+
+/* 导航栏的背景颜色 */
+.menu1 {
+    display: inline-block;
+    margin: 0;
+}
+
+.menu1 a {
+    display: inline-block;
+    margin: 0 30px; /* 每个菜单项的水平间距 */
+    text-decoration: none; /* 去除下划线 */
+    color: #333; /* 字体颜色 */
+    font-size: 18px; /* 字体大小 */
+    line-height: 50px; /* 行高 */
+    cursor: pointer; /* 鼠标悬浮时显示手形光标 */
+    transition: color 0.3s ease, transform 0.3s ease; /* 添加平滑的过渡效果 */
+}
+
+.menu1 a:hover {
+    color: #f39c12; /* 鼠标悬停时的字体颜色 */
+    transform: translateY(-2px); /* 鼠标悬停时稍微上移 */
+}
+
+/* 搜索框样式 */
+.search-box {
+    display: inline-block;
+    margin-top: 10px;
+    float: right; /* 右浮动 */
+}
+
+.search-box input {
+    padding: 10px; /* 内边距 */
+    font-size: 18px; /* 字体大小 */
+    border-radius: 4px; /* 圆角边框 */
+    border: 1px solid #ccc; /* 边框颜色 */
+    width: 200px; /* 宽度 */
+    transition: border 0.3s ease; /* 鼠标悬停时，边框颜色平滑过渡 */
+}
+
+.search-box input:focus {
+    border-color: #f39c12; /* 聚焦时，边框颜色变为橙色 */
+    outline: none; /* 去掉默认的聚焦轮廓 */
+}
+
+/* 模态框样式 */
+.modal {
+    display: none; /* 默认不显示 */
+    position: fixed; /* 固定定位 */
+    z-index: 1; /* 显示在最前面 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明的黑色背景 */
+}
+
+.modal-content {
+    background-color: white; /* 白色背景 */
+    margin: 10% auto; /* 居中显示 */
+    padding: 20px;
+    width: 300px;
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+}
+
+.modal-header {
+    font-size: 18px;
+    font-weight: bold; /* 加粗 */
+    text-align: center; /* 居中对齐 */
+    color: #333; /* 字体颜色 */
+}
+
+.modal-body {
+    margin: 30px;
+    text-align: center;
+}
+
+.modal-body input {
+    width: 100%; /* 输入框宽度100% */
+    padding: 10px; /* 内边距 */
+    margin: 10px 0; /* 上下边距 */
+    border-radius: 4px; /* 圆角 */
+    border: 1px solid #ccc; /* 边框颜色 */
+    font-size: 16px; /* 字体大小 */
+}
+
+.modal-footer {
+    text-align: center; /* 居中对齐 */
+}
+
+.close-btn, .login-btn {
+    cursor: pointer; /* 鼠标悬停时显示手形光标 */
+    padding: 12px 20px; /* 内边距 */
+    border-radius: 4px; /* 圆角 */
+    font-size: 16px; /* 字体大小 */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* 平滑过渡效果 */
+}
+
+.close-btn {
+    background-color: #f44336; /* 红色背景 */
+    color: white; /* 白色字体 */
+    border: none; /* 无边框 */
+}
+
+.login-btn {
+    background-color: #4CAF50; /* 绿色背景 */
+    color: white; /* 白色字体 */
+    border: none; /* 无边框 */
+}
+
+.close-btn:hover, .login-btn:hover {
+    background-color: #d32f2f; /* 鼠标悬停时，按钮背景颜色变暗 */
+    transform: translateY(-2px); /* 鼠标悬停时稍微上移 */
+}
+
+/* 欢迎模态框样式 */
+#welcomeModal {
+    display: none; /* 默认不显示 */
+    position: fixed; /* 固定定位 */
+    z-index: 1; /* 显示在最前面 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明的黑色背景 */
+}
+
+#welcomeModal .modal-content {
+    width: 400px; /* 宽度400px */
+    text-align: center; /* 文本居中 */
+    padding: 20px;
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+}
+
+.welcome-message {
+    font-size: 16px; /* 字体大小 */
+    margin-top: 20px; /* 上边距 */
+    color: green; /* 绿色字体 */
+    font-weight: bold; /* 加粗 */
+}
+
+/* 设置盒子标题的样式 */
+.box-title {
+    font-size: 24px; /* 字体大小 */
+    font-weight: bold; /* 加粗 */
+    color: #333; /* 字体颜色 */
+    margin-top: 40px; /* 上边距 */
+    text-align: center; /* 文本居中 */
+    text-transform: uppercase; /* 字母大写 */
+    letter-spacing: 1px; /* 字母间距 */
+}
+
+/* 高亮样式 */
+.highlight {
+    background-color: yellow; /* 背景颜色为黄色 */
+    font-weight: bold; /* 字体加粗 */
+}
+
+/* 第二标题样式 */
+.title2 {
+    font-family: 'Segoe UI', system-ui, sans-serif; /* 字体 */
+    margin: 20px auto; /* 上下外边距 */
+    font-size: 30px; /* 字体大小 */
+    white-space: nowrap; /* 不换行 */
+    text-align: center; /* 文本居中 */
+    color: #333; /* 字体颜色 */
+}
+
+/* 响应式设计（针对较小屏幕的优化） */
+@media (max-width: 768px) {
+    .container {
+        width: 100%; /* 宽度100% */
+        padding: 10px; /* 内边距调整 */
+    }
+
+    .header {
+        width: 100%; /* 头部宽度100% */
+    }
+
+    .title1 {
+        font-size: 28px; /* 字体大小缩小 */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .menu1 a {
+        font-size: 16px; /* 菜单字体稍小 */
+        margin: 0 15px; /* 菜单项间距调整 */
+    }
+
+    .search-box input {
+        width: 150px; /* 搜索框宽度调整 */
+    }
+
+        .modal-content {
+        width: 90%; /* 模态框宽度调整为90% */
+        padding: 15px; /* 内边距调整 */
+    }
+
+    .modal-body input {
+        font-size: 14px; /* 输入框字体稍小 */
+    }
+
+    .close-btn, .login-btn {
+        padding: 10px 15px; /* 按钮内边距调整 */
+        font-size: 14px; /* 按钮字体调整 */
+    }
+
+    .welcome-message {
+        font-size: 14px; /* 欢迎信息字体大小调整 */
+    }
+
+    .box-title {
+        font-size: 20px; /* 标题字体稍小 */
+    }
+}
+

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 禁用页面缩放 -->
+    <meta name="viewport" content="width=1024, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>计算机岗位数据分析</title>
+    <style>
+        /* 设置整个页面的背景颜色 */
+body {
+    margin: 0; /* 去除默认的边距 */
+    font-family: 'Segoe UI', system-ui, sans-serif; /* 设置字体 */
+    background-color: #f0f0f0; /* 设置页面背景色 */
+    overflow: auto; /* 启用垂直和水平滚动条 */
+    width: 1900px;
+}
+
+/* 内容容器，居中对齐 */
+.container {
+    margin: 0 auto; /* 居中对齐 */
+    width: 100%; /* 容器宽度自适应 */
+    max-width: 1226px; /* 最大宽度为1226px */
+    padding: 20px; /* 内边距 */
+    background-color: bisque; /* 主内容区域的白色背景 */
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 添加柔和的阴影效果 */
+    box-sizing: border-box; /* 包括内边距和边框在内计算宽度 */
+}
+
+/* 头部背景，采用渐变色 */
+.header {
+    position: sticky;
+    top: 0; /* 向上滚动到页面顶部时，元素会固定 */
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* 渐变背景，从橙色到黄色 */
+    padding: 20px 0; /* 上下内边距 */
+    text-align: center; /* 文本居中 */
+    border-radius: 8px 8px 0 0; /* 圆角，顶部圆角 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    width: 100%; /* 头部宽度自适应 */
+}
+
+/* 页面标题 */
+.header .title1 {
+    font-size: 35px; /* 字体大小 */
+    font-family: '华文琥珀', serif; /* 设置中文字体 */
+    color: #ff7e5f;
+    margin: 0; /* 去除默认外边距 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 为文字添加细微的阴影 */
+}
+
+/* 导航栏样式 */
+.menu1 {
+    display: inline-block;
+    margin: 0;
+}
+
+.menu1 a {
+    display: inline-block;
+    margin: 0 30px; /* 每个菜单项的水平间距 */
+    text-decoration: none; /* 去除下划线 */
+    color: #333; /* 字体颜色 */
+    font-size: 18px; /* 字体大小 */
+    line-height: 50px; /* 行高 */
+    cursor: pointer; /* 鼠标悬浮时显示手形光标 */
+    transition: color 0.3s ease, transform 0.3s ease; /* 添加平滑的过渡效果 */
+}
+
+.menu1 a:hover {
+    color: #f39c12; /* 鼠标悬停时的字体颜色 */
+    transform: translateY(-2px); /* 鼠标悬停时稍微上移 */
+}
+
+/* 搜索框样式 */
+.search-box {
+    display: inline-block;
+    margin-top: 10px;
+    float: right; /* 右浮动 */
+}
+
+.search-box input {
+    padding: 10px; /* 内边距 */
+    font-size: 18px; /* 字体大小 */
+    border-radius: 4px; /* 圆角边框 */
+    border: 1px solid #ccc; /* 边框颜色 */
+    width: 200px; /* 宽度 */
+    transition: border 0.3s ease; /* 鼠标悬停时，边框颜色平滑过渡 */
+}
+
+.search-box input:focus {
+    border-color: #f39c12; /* 聚焦时，边框颜色变为橙色 */
+    outline: none; /* 去掉默认的聚焦轮廓 */
+}
+
+/* 模态框样式 */
+.modal {
+    display: none; /* 默认不显示 */
+    position: fixed; /* 固定定位 */
+    z-index: 1; /* 显示在最前面 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明的黑色背景 */
+}
+
+.modal-content {
+    background-color: white; /* 白色背景 */
+    margin: 10% auto; /* 居中显示 */
+    padding: 20px;
+    width: 300px;
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+}
+
+.modal-header {
+    font-size: 18px;
+    font-weight: bold; /* 加粗 */
+    text-align: center; /* 居中对齐 */
+    color: #333; /* 字体颜色 */
+}
+
+.modal-body {
+    margin: 30px;
+    text-align: center;
+}
+
+.modal-body input {
+    width: 100%; /* 输入框宽度100% */
+    padding: 10px; /* 内边距 */
+    margin: 10px 0; /* 上下边距 */
+    border-radius: 4px; /* 圆角 */
+    border: 1px solid #ccc; /* 边框颜色 */
+    font-size: 16px; /* 字体大小 */
+}
+
+.modal-footer {
+    text-align: center; /* 居中对齐 */
+}
+
+.close-btn, .login-btn {
+    cursor: pointer; /* 鼠标悬停时显示手形光标 */
+    padding: 12px 20px; /* 内边距 */
+    border-radius: 4px; /* 圆角 */
+    font-size: 16px; /* 字体大小 */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* 平滑过渡效果 */
+}
+
+.close-btn {
+    background-color: #f44336; /* 红色背景 */
+    color: white; /* 白色字体 */
+    border: none; /* 无边框 */
+}
+
+.login-btn {
+    background-color: #4CAF50; /* 绿色背景 */
+    color: white; /* 白色字体 */
+    border: none; /* 无边框 */
+}
+
+.close-btn:hover, .login-btn:hover {
+    background-color: #d32f2f; /* 鼠标悬停时，按钮背景颜色变暗 */
+    transform: translateY(-2px); /* 鼠标悬停时稍微上移 */
+}
+
+/* 欢迎模态框样式 */
+#welcomeModal {
+    display: none; /* 默认不显示 */
+    position: fixed; /* 固定定位 */
+    z-index: 1; /* 显示在最前面 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明的黑色背景 */
+}
+
+#welcomeModal .modal-content {
+    width: 400px; /* 宽度400px */
+    text-align: center; /* 文本居中 */
+    padding: 20px;
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+}
+
+.welcome-message {
+    font-size: 16px; /* 字体大小 */
+    margin-top: 20px; /* 上边距 */
+    color: green; /* 绿色字体 */
+    font-weight: bold; /* 加粗 */
+}
+
+/* 设置盒子标题的样式 */
+.box-title {
+    font-size: 24px; /* 字体大小 */
+    font-weight: bold; /* 加粗 */
+    color: #333; /* 字体颜色 */
+    margin-top: 40px; /* 上边距 */
+    text-align: center; /* 文本居中 */
+    text-transform: uppercase; /* 字母大写 */
+    letter-spacing: 1px; /* 字母间距 */
+}
+
+/* 高亮样式 */
+.highlight {
+    background-color: yellow; /* 背景颜色为黄色 */
+    font-weight: bold; /* 字体加粗 */
+}
+
+/* 第二标题样式 */
+.title2 {
+    font-family: 'Segoe UI', system-ui, sans-serif; /* 字体 */
+    margin: 20px auto; /* 上下外边距 */
+    font-size: 30px; /* 字体大小 */
+    white-space: nowrap; /* 不换行 */
+    text-align: center; /* 文本居中 */
+    color: #333; /* 字体颜色 */
+
+}
+
+.elements {
+    width: 800px;
+    display: inline-block;
+    border: 2px solid #f44336;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    transition: all 0.3s ease;
+    text-decoration: none; /* 去掉链接的下划线 */
+}
+
+.elements span {
+    display: inline-block;
+    margin: 10px; /* 给每个 div 添加一些间距 */
+    font-family: 黑体;
+    font-size: 22px;
+}
+
+.elements:hover {
+    border-color: #f44336; /* #f44336 */
+    background-color:lightgoldenrodyellow; /* 背景颜色变浅 */
+}
+
+/* 面板样式 */
+.panel {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 面板头部 */
+.panel-header {
+    background-color: #f5f5f5;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+/* 面板内容 */
+.panel-body {
+    padding: 20px;
+    font-size: 16px;
+    color: #666;
+    height: 300px; /* 给每个面板一个固定高度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+/* 响应式布局 */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.col-sm-8, .col-sm-4 {
+    flex: 1;
+    min-width: 300px; /* 最小宽度，确保列不被压缩得太小 */
+}
+
+.col-sm-8 {
+    flex: 2; /* 让 col-sm-8 占据更多空间 */
+}
+
+/* 使面板中的内容居中 */
+.panel-body .chart {
+    width: 100%;
+    height: 100%;
+    background-color: #e9ecef; /* 轻微灰色背景 */
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #333;
+}
+
+
+/* 添加悬停效果 */
+.panel:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    transition: all 0.3s ease-in-out;
+}
+
+</style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container clearfix">
+            <!-- 导航菜单 -->
+            <div class="menu1">
+                <a href="首页.html">首页</a>
+                <a id="loginLink" onclick="clickMe()">登录</a> <!-- 给登录按钮一个 id -->
+                <a id="registerLink" onclick="clickRegister()">注册</a>
+                <div class="title1">DATA Analysis</div>
+            </div>
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索..." onkeydown="handleKeyDown(event)">
+            </div>
+        </div>
+
+        <!-- 热招职位推荐 -->
+        <h2 class="title2">热招职位推荐</h2>
+        <a class="elements">
+            <span>web前端</span>
+            <span>薪资：3-4k</span>
+            <span>经验：不限</span>
+            <span>地区：成都</span>
+        </a>
+        <br><br>
+        <a class="elements">
+            <span>vue前端</span>
+            <span>薪资：4-8k</span>
+            <span>经验：1-3年</span>
+            <span>地区：成都</span>
+        </a>
+        <br><br>
+        <a class="elements">
+            <span>react前端</span>
+            <span>薪资：17-22k</span>
+            <span>经验：1-3年</span>
+            <span>地区：成都</span>
+        </a>
+        <br><br>
+        <a class="elements">
+            <span>cocos游戏开发</span>
+            <span>薪资：8-13k</span>
+            <span>经验：3-5年</span>
+            <span>地区：成都</span>
+        </a>
+        <br><br>
+
+        <!-- 数据图表分析 -->
+        <h2 class="title2">数据图表分析</h2>
+
+<div class="panel panel-default">
+    <div class="panel-header">折线图</div>
+    <div class="panel-body">
+        <div class="chart">
+            <div id="m1" style="height:300px; width: 1500px"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 图表区域 -->
+<div class="row">
+    <div class="col-sm-8">
+        <div class="panel panel-default">
+            <div class="panel-header">柱状图</div>
+            <div class="panel-body">
+                <div class="chart">
+                   <div id="m2" style="height:300px; width:800px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-header">饼图</div>
+            <div class="panel-body">
+                <div class="chart">
+                    <div id="m3" style="height:300px; width: 500px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+
+    <!-- 登录弹窗 -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">登录</div>
+            <div class="modal-body">
+                <input id="username" placeholder="请输入用户名" />
+                <input id="account" placeholder="请输入账号" />
+                <input id="password" placeholder="请输入密码" type="password" />
+            </div>
+            <div class="modal-footer">
+                <button class="login-btn" onclick="submitLogin()">登录</button>
+                <button class="close-btn" onclick="closeModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册弹窗 -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">注册</div>
+            <div class="modal-body">
+                <input id="regUsername" placeholder="请输入用户名" />
+                <input id="regAccount" placeholder="请输入账号" />
+                <input id="regPassword" placeholder="请输入密码" type="password" />
+                <input id="regConfirmPassword" placeholder="确认密码" type="password" />
+            </div>
+            <div class="modal-footer">
+                <button class="login-btn" onclick="submitRegister()">注册</button>
+                <button class="close-btn" onclick="closeRegisterModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 欢迎弹窗 -->
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">欢迎</div>
+            <div class="modal-body">
+                <div class="welcome-message" id="welcomeMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="close-btn" onclick="closeWelcomeModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/echarts.js"></script>
+    <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('m2'));
+
+      // 指定图表的配置项和数据
+      var option = {
+        tooltip: {},
+        legend: {
+          data: ['平均薪资']
+        },
+        xAxis: {
+          data: ['前端', '后端', '测试开发', '网络运维']
+        },
+        yAxis: {},
+        series: [
+          {
+            name: '平均薪资',
+            type: 'bar',
+            data: [15000,8000,11000,6000]
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    </script>
+
+    <script type="text/javascript">
+        var chartDom = document.getElementById('m1');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+          xAxis: {
+            type: 'category',
+            data: ['前端', '后端', '测试开发', '网络运维']
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [
+            {
+              data: [302,458,111,129],
+              type: 'line',
+              smooth: true
+            }
+          ]
+        };
+
+        option && myChart.setOption(option);
+
+    </script>
+    <script type="text/javascript">
+        var chartDom = document.getElementById('m3');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+          title: {
+            text: '学历限制',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left'
+          },
+          series: [
+            {
+              name: 'Access From',
+              type: 'pie',
+              radius: '50%',
+              data: [
+                { value: 169, name: '学历不限' },
+                { value: 23, name: '专科及以上' },
+                { value: 580, name: '本科及以上' },
+                { value: 208, name: '硕士及以上' },
+                { value: 20, name: '博士' }
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        };
+
+        option && myChart.setOption(option);
+
+    </script>
+    <script>
+        // 登录弹窗显示
+        function clickMe() {
+            document.getElementById("loginModal").style.display = "block";
+        }
+
+        // 关闭登录弹窗
+        function closeModal() {
+            document.getElementById("loginModal").style.display = "none";
+        }
+
+        // 注册弹窗显示
+        function clickRegister() {
+            document.getElementById("registerModal").style.display = "block";
+        }
+
+        // 关闭注册弹窗
+        function closeRegisterModal() {
+            document.getElementById("registerModal").style.display = "none";
+        }
+
+        // 登录验证与提交
+        function submitLogin() {
+            var username = document.getElementById("username").value;
+            var account = document.getElementById("account").value;
+            var password = document.getElementById("password").value;
+
+            if (username && password && account) {
+                // 通过 AJAX 与后台交互验证用户名和密码
+                var data = { username: username, account: account, password: password };
+                // 模拟 AJAX 请求 (此处可以替换为实际的后台接口)
+                setTimeout(function () {
+                    if (account === "test" && password === "123") {
+                        // 登录成功
+                        document.getElementById("loginModal").style.display = "none";
+                        document.getElementById("welcomeMessage").innerText = "欢迎回来，" + username + "!";
+                        document.getElementById("welcomeModal").style.display = "block";
+                        var loginLink = document.getElementById("loginLink");
+                        loginLink.innerHTML = "hi! " + username;
+                    } else {
+                        alert("账号或密码错误！");
+                    }
+                }, 1000);
+            } else {
+                alert("请输入完整的登录信息！");
+            }
+        }
+
+        // 注册验证与提交（模拟后台交互）
+        function submitRegister() {
+            var regUsername = document.getElementById("regUsername").value;
+            var regAccount = document.getElementById("regAccount").value;
+            var regPassword = document.getElementById("regPassword").value;
+            var regConfirmPassword = document.getElementById("regConfirmPassword").value;
+
+            if (regUsername && regAccount && regPassword && regConfirmPassword) {
+                if (regPassword === regConfirmPassword) {
+                    // 模拟 AJAX 请求
+                    setTimeout(function () {
+                        // 假设注册成功
+                        alert("注册成功！");
+
+                        // 关闭注册弹窗
+                        document.getElementById("registerModal").style.display = "none";
+                    }, 1000);
+                } else {
+                    alert("两次密码输入不一致！");
+                }
+            } else {
+                alert("请填写完整的注册信息！");
+            }
+        }
+
+        // 关闭欢迎弹窗
+        function closeWelcomeModal() {
+            document.getElementById("welcomeModal").style.display = "none";
+        }
+
+
+
+
+
+
+
+
+
+
+        function handleKeyDown(event) {
+    var searchValue = document.getElementById('searchInput').value.trim();
+
+    // 如果按下的是回车键
+    if (event.key === "Enter") {
+        if (searchValue.length > 0) {
+            // 使用 AJAX 向 Django 后端发送请求
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', `/search/?q=${encodeURIComponent(searchValue)}`, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // 解析返回的 JSON 数据
+                    var results = JSON.parse(xhr.responseText);
+                    // 如果搜索结果不为空，跳转到第一个结果的详情页
+                    if (results.length > 0) {
+                        window.location.href = `/details/${results[0].id}`;
+                    } else {
+                        // 如果没有找到结果，显示提示信息
+                        alert("未找到匹配的结果");
+                    }
+                }
+            };
+            xhr.send();
+        } else {
+            alert("请输入搜索内容");
+        }
+    } else if (searchValue.length > 0) {
+        // 实时搜索逻辑：如果输入框中有内容，则发起搜索请求
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `/search/?q=${encodeURIComponent(searchValue)}`, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var results = JSON.parse(xhr.responseText);
+                displaySearchResults(results);
+            }
+        };
+        xhr.send();
+    } else {
+        // 清空结果展示
+        document.getElementById('searchResults').innerHTML = '';
+    }
+}
+
+function displaySearchResults(results) {
+    var resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = '';  // 清空现有的搜索结果
+
+    if (results.length > 0) {
+        results.forEach(function(item) {
+            var div = document.createElement('div');
+            div.classList.add('result-item');
+            div.textContent = item.name;  // 假设返回的数据有 'name' 字段
+
+            // 给每个结果项添加点击事件
+            div.onclick = function() {
+                // 跳转到详情页面，传递选中的 item.id
+                window.location.href = "search.html";
+            };
+
+            resultsContainer.appendChild(div);
+        });
+    } else {
+        resultsContainer.innerHTML = '未找到匹配的结果';
+    }
+
+}
+    </script>
+</body>
+
+</html>
