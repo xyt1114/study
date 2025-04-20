@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- element-ui 的 css 文件 -->
+    <link rel="stylesheet" href="../static/element-ui/lib/theme-chalk/index.css">
+    <!-- vue.js 文件 -->
+    <script src="../static/js/vue.js"></script>
+    <!-- element-ui 的 js 文件 -->
+    <script src="../static/element-ui/lib/index.js"></script>
+    <script src="../static/axios/dist/axios.js"></script>
+
+<style>
+        /* 修改后的蓝色风格 */
+        .app {
+            background: #f8f9ff;
+            height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            background: linear-gradient(145deg, #1976D2 0%, #2196F3 100%);
+            box-shadow: 4px 0 15px rgba(25, 118, 210, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .collapse-btn {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.15);
+            color: #1976D2;
+        }
+
+        .el-header h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            letter-spacing: 1px;
+            padding: 20px 0;
+        }
+
+        .qa-question {
+            background: #ffffff;
+            border: 2px solid #e0e7ff;
+            color: #2c3e50;
+            margin-right: 20px;
+        }
+
+        .qa-question:after {
+            border-left-color: #e0e7ff;
+        }
+
+        .qa-answer {
+            background: #f8f9ff;
+            border: 2px solid #64B5F6;
+            color: #1976D2;
+            margin-left: 20px;
+        }
+
+        .qa-answer:before {
+            border-right-color: #64B5F6;
+        }
+
+        .el-button--primary {
+            background: linear-gradient(135deg, #1976D2, #2196F3);
+            border-radius: 8px;
+        }
+
+        .el-button--primary:hover {
+            background: linear-gradient(135deg, #1565C0, #1976D2);
+        }
+
+        .el-menu {
+            background: transparent !important;
+        }
+
+        .el-menu-item {
+            color: #e3f2fd !important;
+            font-weight: 500;
+        }
+
+        .el-menu-item:hover {
+            background: rgba(255,255,255,0.1) !important;
+        }
+
+        .el-input__inner {
+            border: 2px solid #e0e7ff;
+            background: #ffffff;
+            border-radius: 8px;
+        }
+
+        .el-input__inner:focus {
+            border-color: #64B5F6;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+        }
+
+        .loading-answer {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+        }
+
+        @media (max-width: 768px) {
+            .el-header h1 {
+                font-size: 20px;
+            }
+            
+            .sidebar {
+                width: 180px !important;
+            }
+            
+            .qa-question, .qa-answer {
+                margin: 10px;
+                max-width: 90%;
+            }
+        }
+
+        /* 统一过渡效果 */
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+
+</head>
+<body>
+<div id="myApp">
+    <div class="app">
+        <!-- 左侧导航栏 -->
+        <el-aside :class="['sidebar', { collapsed: isCollapsed }]" :width="isCollapsed ? '64px' : '200px'">
+            <el-button type="primary" style="width: 199px;" @click="clearQuestionAnswers">+新建对话</el-button>
+            <el-menu
+                    :default-active="activeIndex"
+                    class="el-menu-vertical-demo"
+                    @select="handleSelect"
+                    :collapse="isCollapsed"
+                    v-for="(item,index) in myHistory"
+                    :key="index"
+            >
+                <el-menu-item :index="item.queryParam">
+                    <span slot="title">[{item.queryParam}]</span>
+                </el-menu-item>
+
+            </el-menu>
+            <!-- 折叠按钮 -->
+            <div class="collapse-btn" @click="toggleCollapse">
+                <i :class="isCollapsed ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left'"></i>
+            </div>
+        </el-aside>
+
+        <!-- 主要内容区域 -->
+        <el-container style="display: flex; flex-direction: column; height: 100%;">
+            <!-- 顶部标题 -->
+            <el-header>
+                <h1>通义智能助手</h1>
+            </el-header>
+
+            <!-- 中间内容区域 -->
+            <el-main style="flex-grow: 1; padding: 0;"> <!-- 移除默认内边距 -->
+                <!-- 问答显示区域 -->
+                <div class="question-answer-area">
+                    <div v-for="(qa, index) in questionAnswers" :key="index" class="qa-item">
+                        <div class="qa-question">[{ qa.question }]</div>
+                        <div class="qa-answer">[{ qa.answer }]</div>
+                    </div>
+                </div>
+            </el-main>
+
+            <!-- 底部输入框 -->
+            <div class="input-area">
+                <el-row type="flex" justify="space-between" align="middle" style="width: 100%;">
+                    <el-col :span="20">
+                        <el-input placeholder="请输入内容" v-model="input" @keyup.enter.native="onSubmit" ></el-input>
+                    </el-col>
+                    <el-col :span="4" style="text-align: left;">
+                        <el-button type="primary" icon="el-icon-search" @click="onSubmit" >发送</el-button>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-container>
+    </div>
+</div>
+<script>
+    new Vue({
+        el: "#myApp",
+        delimiters: ['[{','}]'],
+        data: {
+            activeIndex: "1",
+            input: "",
+            questionAnswers: [], // 存储问答对
+            isCollapsed: false,// 是否折叠
+            myHistory:[
+            ],
+            isDisabled: true,
+        },
+        methods: {
+          handleSelect(key, keyPath) {
+            this.loadQa(key);
+          },
+          onSubmit() {
+              console.log(this.input)
+              if (this.input.trim()){
+                 axios({
+                     url:'http://localhost:8000/question/',
+                     method: 'GET',
+                     params: {
+                         queryParam:this.input,
+                         username: sessionStorage.getItem('username'),
+                     }
+
+                 }).then(res => {
+                     if(res.data.status === 200){
+                        this.questionAnswers.push(res.data.data);
+                        this.loadHistory();
+                     }else{
+                         this.$message.error("服务器繁忙，请稍后再试。");
+                     }
+                 }).catch(error => {
+                     console.log(error)
+                     this.$message.error("服务器繁忙，请稍后再试。");
+                 })
+              }else{
+                  this.$message.error("请输入问题");
+              }
+          },
+          toggleCollapse() {
+            this.isCollapsed = !this.isCollapsed;
+          },
+          loadHistory() {
+            // 通过 axios 请求，获取历史数据，可访问的地址 http://localhost:8000/historylist/
+            axios({
+              url: "http://localhost:8000/historyList/",
+              method: "GET", // 请求方式
+              params: { // 请求参数
+                username: "admin", // 用户名 admin
+              },
+            }).then(res => { // 请求成功返回结果
+              this.myHistory = res.data.myData;
+            })
+            .catch(error => { // 请求失败返回错误
+              console.log(error);
+              this.$message.error("加载历史记录失败");
+            });
+          },
+          changBtn(){
+              if (this.input.trim()){
+                  this.isDisabled = false;
+              }else{
+                  this.isDisabled = true;
+              }
+          },
+          loadQa(queryParam) {
+
+                axios({
+                  url: 'http://localhost:8000/qaList/',
+                  method: 'GET',
+                  params: {
+                    username: sessionStorage.getItem('username'),
+                    queryParam: queryParam,
+                  },
+                }).then(res => {
+                  this.questionAnswers = res.data.data;
+                });
+              },
+          clearQuestionAnswers(){
+              this.questionAnswers = [];
+          }  
+        },
+        mounted() {
+          this.loadHistory();
+        },
+    })
+</script>
+</body>
+</html>

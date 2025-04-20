@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .register-container {
+            background: rgba(255, 255, 255, 0.98);
+            width: 420px;
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            color: #2c3e50;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .register-container:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .register-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1976D2;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .register-header p {
+            color: #7f8c8d;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #34495e;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8f9ff;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #64B5F6;
+            box-shadow: 0 0 0 4px rgba(100, 181, 246, 0.2);
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 18px;
+            top: 42px;
+            color: #90a4ae;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 17px;
+            background: #1976D2;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-register:hover {
+            background: #1565C0;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(25, 118, 210, 0.4);
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 15px;
+            color: #7f8c8d;
+        }
+
+        .register-footer a {
+            color: #1976D2;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .register-footer a:hover {
+            color: #0D47A1;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .social-btn {
+            padding: 14px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: #bdc3c7;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e0e7ff;
+        }
+
+        .divider span {
+            padding: 0 15px;
+            color: #7f8c8d;
+        }
+
+        .error-message {
+            color: #e53935;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                width: 90%;
+                padding: 30px 25px;
+                border-radius: 12px;
+            }
+            
+            .register-header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>创建账户</h1>
+            <p>填写以下信息以创建您的账户</p>
+        </div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" placeholder="请输入用户名" required>
+                <div class="error-message" id="username-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" placeholder="请输入密码" required>
+                <i class="fas fa-eye" id="togglePassword"></i>
+                <div class="error-message" id="password-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">确认密码</label>
+                <input type="password" id="confirm-password" placeholder="请再次输入密码" required>
+                <i class="fas fa-eye" id="toggleConfirmPassword"></i>
+                <div class="error-message" id="confirm-password-error"></div>
+            </div>
+
+            <button type="submit" class="btn-register">注册</button>
+
+            <div class="divider">
+                <span>或</span>
+            </div>
+
+            <div class="social-login">
+                <div class="social-btn" style="background-color: #3b5998;">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="social-btn" style="background-color: #1da1f2;">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <div class="social-btn" style="background-color: #db4437;">
+                    <i class="fab fa-google"></i>
+                </div>
+            </div>
+
+            <div class="register-footer">
+                <p>已有账号？ <a href="http://localhost:8000/">立即登录</a></p>
+                <p><a href="#">隐私政策</a> | <a href="#">服务条款</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Font Awesome 图标库 -->
+    <script src="https://kit.fontawesome.com/a076d05399.js " crossorigin="anonymous"></script>
+    
+    <!-- Axios 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js "></script>
+
+    <script>
+        // 密码可见性切换功能
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
+
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        
+        if (toggleConfirmPassword && confirmPasswordInput) {
+            toggleConfirmPassword.addEventListener('click', function() {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
+
+        // 表单提交处理
+        // 表单提交处理
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // 阻止表单默认提交行为
+        
+                // 获取表单数据
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+        
+                // 简单的表单验证
+                let isValid = true;
+                
+                if (!username) {
+                    document.getElementById('username-error').textContent = '用户名不能为空';
+                    document.getElementById('username-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('username-error').style.display = 'none';
+                }
+        
+                if (!password) {
+                    document.getElementById('password-error').textContent = '密码不能为空';
+                    document.getElementById('password-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('password-error').style.display = 'none';
+                }
+        
+                if (!confirmPassword) {
+                    document.getElementById('confirm-password-error').textContent = '确认密码不能为空';
+                    document.getElementById('confirm-password-error').style.display = 'block';
+                    isValid = false;
+                } else if (password !== confirmPassword) {
+                    document.getElementById('confirm-password-error').textContent = '两次输入的密码不一致';
+                    document.getElementById('confirm-password-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('confirm-password-error').style.display = 'none';
+                }
+        
+                if (!isValid) {
+                    return;
+                }
+        
+                // 使用 Axios 发送数据到服务器
+                axios.post('http://localhost:8000/user_logon/', {
+                    username: username,
+                    password: password,
+                    confirm_password: confirmPassword
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    // 注册成功
+                    alert('注册成功！');
+                    // 可以在这里跳转到登录页面或其他页面
+                    window.location.href = 'http://localhost:8000/';
+                })
+                .catch(error => {
+                    // 注册失败
+                    console.error('注册失败:', error);
+                    alert('注册失败，请稍后再试');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
